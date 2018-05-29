@@ -1,0 +1,9 @@
+D:\私人\设计模式示例\设计模式示例\bin\Debug\DesignPatternLib.dll
+D:\私人\设计模式示例\设计模式示例\bin\Debug\DesignPatternLib.pdb
+D:\私人\设计模式示例\设计模式示例\obj\Debug\DesignPatternLib.dll
+D:\私人\设计模式示例\设计模式示例\obj\Debug\DesignPatternLib.pdb
+D:\私人\设计模式示例\设计模式示例\obj\Debug\设计模式示例.csprojResolveAssemblyReference.cache
+D:\03 编程\05 近期待整理\私人\设计模式示例\设计模式示例\bin\Debug\DesignPatternLib.dll
+D:\03 编程\05 近期待整理\私人\设计模式示例\设计模式示例\bin\Debug\DesignPatternLib.pdb
+D:\03 编程\05 近期待整理\私人\设计模式示例\设计模式示例\obj\Debug\DesignPatternLib.dll
+D:\03 编程\05 近期待整理\私人\设计模式示例\设计模式示例\obj\Debug\DesignPatternLib.pdb

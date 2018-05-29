@@ -1,0 +1,13 @@
+﻿参考：
+1.http://www.cnblogs.com/zhenyulu/articles/39386.html
+
+结构模式（Structural Pattern）描述如何将类或者对象结合在一起形成更大的结构。结构模式描述两种不同的东西：类与类的实例。根据这一点，结构模式可以分为类的结构模式和对象的结构模式。
+
+包括以下结构模式：
+•适配器模式（Adapter）：Match interfaces of different classes 
+•合成模式（Composite）：A tree structure of simple and composite objects 
+•装饰模式（Decorator）：Add responsibilities to objects dynamically 
+•代理模式（Proxy）：An object representing another object 
+•享元模式（Flyweight）：A fine-grained instance used for efficient sharing 
+•门面模式（Facade）：A single class that represents an entire subsystem 
+•桥梁模式（Bridge）：Separates an object interface from its implementation 

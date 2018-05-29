@@ -1,0 +1,57 @@
+﻿参考：
+1.http://www.cnblogs.com/zhili/p/SingletonPatterm.html
+2.http://csharpindepth.com/Articles/General/Singleton.aspx
+3.http://stackoverflow.com/questions/5996727/a-simple-implementation-of-a-singleton
+4.http://www.cnblogs.com/rush/archive/2011/10/30/2229565.html
+
+单例模式的优点：
+
+单例模式（Singleton）会控制其实例对象的数量，从而确保访问对象的唯一性。
+1.实例控制：单例模式防止其它对象对自己的实例化，确保所有的对象都访问一个实例。 
+2.伸缩性：因为由类自己来控制实例化进程，类就在改变实例化进程上有相应的伸缩性。 
+
+
+
+单例模式的缺点：
+1.系统开销。虽然这个系统开销看起来很小，但是每次引用这个类实例的时候都要进行实例是否存在的检查。这个问题可以通过静态实例来解决。 
+2.开发混淆。当使用一个单例模式的对象的时候（特别是定义在类库中的），开发人员必须要记住不能使用new关键字来实例化对象。因为开发者看不到在类库中的源代码，所以当他们发现不能实例化一个类的时候会很惊讶。 
+3.对象生命周期。单例模式没有提出对象的销毁。在提供内存管理的开发语言（比如，基于.NetFramework的语言）中，只有单例模式对象自己才能将对象实例销毁，因为只有它拥有对实例的引用。在各种开发语言中，比如C++，其它类可以销毁对象实例，但是这么做将导致单例类内部的指针指向不明。 
+
+
+
+单例适用性
+
+使用Singleton模式有一个必要条件：在一个系统要求一个类只有一个实例时才应当使用单例模式。反之，如果一个类可以有几个实例共存，就不要使用单例模式。
+不要使用单例模式存取全局变量。这违背了单例模式的用意，最好放到对应类的静态成员中。
+不要将数据库连接做成单例，因为一个系统可能会与数据库有多个连接，并且在有连接池的情况下，应当尽可能及时释放连接。Singleton模式由于使用静态成员存储类实例，所以可能会造成资源无法及时释放，带来问题。
+
+
+
+Performance vs laziness
+
+In many cases, you won't actually require full laziness - unless your class initialization does something particularly time-consuming, or has some side-effect elsewhere, it's probably fine to leave out the explicit static constructor shown above. This can increase performance as it allows the JIT compiler to make a single check (for instance at the start of a method) to ensure that the type has been initialized, and then assume it from then on. If your singleton instance is referenced within a relatively tight loop, this can make a (relatively) significant performance difference. You should decide whether or not fully lazy instantiation is required, and document this decision appropriately within the class.
+A lot of the reason for this page's existence is people trying to be clever, and thus coming up with the double-checked locking algorithm. There is an attitude of locking being expensive which is common and misguided. I've written a very quick benchmark which just acquires singleton instances in a loop a billion ways, trying different variants. It's not terribly scientific, because in real life you may want to know how fast it is if each iteration actually involved a call into a method fetching the singleton, etc. However, it does show an important point. On my laptop, the slowest solution (by a factor of about 5) is the locking one (solution 2). Is that important? Probably not, when you bear in mind that it still managed to acquire the singleton a billion times in under 40 seconds. (Note: this article was originally written quite a while ago now - I'd expect better performance now.) That means that if you're "only" acquiring the singleton four hundred thousand times per second, the cost of the acquisition is going to be 1% of the performance - so improving it isn't going to do a lot. Now, if you are acquiring the singleton that often - isn't it likely you're using it within a loop? If you care that much about improving the performance a little bit, why not declare a local variable outside the loop, acquire the singleton once and then loop. Bingo, even the slowest implementation becomes easily adequate.
+I would be very interested to see a real world application where the difference between using simple locking and using one of the faster solutions actually made a significant performance difference.
+
+
+
+Exceptions
+
+Sometimes, you need to do work in a singleton constructor which may throw an exception, but might not be fatal to the whole application. Potentially, your application may be able to fix the problem and want to try again. Using type initializers to construct the singleton becomes problematic at this stage. Different runtimes handle this case differently, but I don't know of any which do the desired thing (running the type initializer again), and even if one did, your code would be broken on other runtimes. To avoid these problems, I'd suggest using the second pattern listed on the page - just use a simple lock, and go through the check each time, building the instance in the method/property if it hasn't already been successfully built.
+Thanks to Andriy Tereshchenko for raising this issue.
+
+
+
+Conclusion (modified slightly on January 7th 2006; updated Feb 12th 2011)
+
+There are various different ways of implementing the singleton pattern in C#. A reader has written to me detailing a way he has encapsulated the synchronization aspect,
+which while I acknowledge may be useful in a few very particular situations (specifically where you want very high performance, and the ability to determine whether or not
+the singleton has been created, and full laziness regardless of other static members being called). I don't personally see that situation coming up often enough to merit going
+further with on this page, but please mail me if you're in that situation.
+My personal preference is for solution 4: the only time I would normally go away from it is if I needed to be able to call other static methods without triggering initialization,
+or if I needed to know whether or not the singleton has already been instantiated. I don't remember the last time I was in that situation, assuming I even have. In that case, 
+I'd probably go for solution 2, which is still nice and easy to get right.
+Solution 5 is elegant, but trickier than 2 or 4, and as I said above, the benefits it provides seem to only be rarely useful. Solution 6 is a simpler way to achieve laziness, 
+if you're using .NET 4. It also has the advantage that it's obviously lazy. I currently tend to still use solution 4, simply through habit - but if I were working with 
+inexperienced developers I'd quite possibly go for solution 6 to start with as an easy and universally applicable pattern.
+(I wouldn't use solution 1 because it's broken, and I wouldn't use solution 3 because it has no benefits over 5.)

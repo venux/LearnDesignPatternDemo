@@ -1,0 +1,3 @@
+﻿参考：
+1.http://www.cnblogs.com/zhili/p/SimpleFactory.html
+2.http://www.cnblogs.com/zhili/p/FactoryMethod.html
